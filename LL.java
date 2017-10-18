@@ -3,6 +3,8 @@ import java.util.*;
 class LL{
 
 	Node head;
+	Integer inti;
+	Node first,rest;
 	class Node{
 		int data;
 		Node next;
@@ -118,8 +120,8 @@ class LL{
 			return;
 		} 
 
-		if(cur.data == data)
-			pre.next = cur.next;
+		
+		pre.next = cur.next;
 	
 	}
 	void del_last(int data){
@@ -132,7 +134,7 @@ class LL{
 			System.out.println("Cant delete from Empty list");
 			return;
 		}
-		if(head.data == data){
+		if(head.next == null && head.data == data){
 			head = head.next;
 			return;
 		}
@@ -144,13 +146,17 @@ class LL{
 			prev = cur;
 			cur = cur.next;
 		}
-		if(cur1 == null || prev1 == null){
+		if( prev1 == null){
+			if(head.data == data)
+			{
+				head = head.next;
+				return;
+			}
 			System.out.println("Not found");
 			return;
 		} 
 
-		if(cur1.data == data)
-			prev1.next = cur1.next;
+		prev1.next = cur1.next;
 	
 
 	}
@@ -287,19 +293,7 @@ class LL{
 		cur_y.next = temp;
 		
 	}
-	void rev_rec(Node cur,Node prev) {
-		if(cur == null){
-			head = prev;
-			return;
-		}
-		
-		
-		Node temp = cur.next;
-		cur.next = prev;
-		rev_rec(temp,cur);
-		
-	}
-	
+
 	void rev(){
 		if(head == null){
 			System.out.println("Empty list");
@@ -319,8 +313,22 @@ class LL{
 		
 		head = pre;
 	}
-	/*void rev_help(Node head){
-		Node first,rest;
+	void rev_rec(Node cur,Node prev) {
+		if(cur == null){
+			head = prev;
+			return;
+		}
+		
+		
+		Node temp = cur.next;
+		cur.next = prev;
+		rev_rec(temp,cur);
+		
+	}
+	
+
+	void rev_help(Node head){
+		
 		if(head == null)
 			return;
 		first = head;
@@ -334,9 +342,9 @@ class LL{
 	}
 
 	void rev_rec(){
-		rev_help(head);
+		rev_help(head); //rev_rec(head,null);
 	}
-	*/
+	
 	void print_rev(Node head){
 		if(head == null)
 			return;
@@ -346,6 +354,7 @@ class LL{
 	void print_rev(){
 		print_rev(head);
 	}
+
 	boolean search(Node head,int data){
 		if(head == null)
 			return false;
@@ -364,18 +373,20 @@ class LL{
 		}
 		return -1;
 	}
-	/*void get_n_rec(Node head,int index,Integer i){
+	void get_n_rec(Node head,int index){
 		
 		if(head == null )
 			return;
-		get_n_rec(head.next,index,i);
-		if(++i == index)
+		get_n_rec(head.next,index);
+		if(++inti == index)
 			System.out.println(head.data);
 
+	}
 	
-	void get_n_rec(int index){
-		 get_n_rec(head,index,0);
-	}*/
+	void get_n_rec(int index,int len){
+		inti = 1;
+		 get_n_rec(head,index);
+	}
 	void get_n_rev(int index){
 		if(head == null)
 			return;
@@ -462,7 +473,7 @@ class LL{
 			else if(ch == 15)
 				l.rev();
 			else if(ch == 16)
-				l.rev_rec(l.head,null);
+				l.rev_rec();
 			else if(ch == 17)
 				l.print_rev();
 			else if(ch == 18){
@@ -475,7 +486,8 @@ class LL{
 			}
 			else if(ch == 20){
 				index = in.nextInt();
-				l.get_n_rev(index+1);
+				int len=l.length();
+				l.get_n_rec(index,len);
 			}
 		}
 
